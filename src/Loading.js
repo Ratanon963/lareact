@@ -1,5 +1,5 @@
 import React from 'react'  // state less
 
-const Loading = ({message}) => <h2>{message}</h2>;
+const Loading = ({meassage}) => <h2>{meassage}</h2>;
 
-export default Loading;
+export default Loading;  

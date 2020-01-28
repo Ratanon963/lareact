@@ -58,7 +58,7 @@ class App extends Component {
           </div>
         ))
       ) : (
-          < Loading meassage="Hey hey hey...." />
+          < Loading meassage ="Hey hey hey...." />
         )}
     </div>);
   }

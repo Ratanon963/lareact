@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Loading from './Loading';
 
 class App extends Component {
   constructor(props) {
@@ -8,42 +9,58 @@ class App extends Component {
     this.state = {
       users: [],
       loading: false
-    }
+    };
+
+    //Bind
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getUsers() {
     this.setState({
       loading: true
     })
-    axios('https://api.randomuser.me/?nat=US&results=5')
-      .then(response => this.setState({
-        users: response.data.results,
+    axios('https://api.randomuser.me/?nat=US&results=5').then(response =>
+      this.setState({
+        users: [...this.state.users, ...response.data.results],   // Get data to array and concat
         loading: false
-      }))
-
+      })
+    );
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    this.getUsers();
+    console.log('more users loaded');
+  }
 
   componentWillMount() {
     this.getUsers();
 
   }
 
-
   render() {
-    return <div className='App'>
-      {!this.state.loading
-        ? this.state.users.map(user => (
-          <div>
-            <h3>{user.name.first}</h3>
+    const { loading, users } = this.state
+
+    return (
+    <div className='App'>
+      <form onSubmit={this.handleSubmit}>
+        <input type="submit" value="load users" />
+      </form>
+      <hr />
+
+      {!loading ? (
+        users.map(user => (
+          // Add unique key 
+          <div key={user.id.value}>
+            <h3 style={{ color: 'red' }} >{user.name.first}</h3>
             <p>{user.email}</p>
             <hr />
           </div>
-
-
-        )) : 'loading.....'}
-
-    </div>;
+        ))
+      ) : (
+          < Loading meassage="Hey hey hey...." />
+        )}
+    </div>);
   }
 }
 
